@@ -1,0 +1,50 @@
+package com.sistema.tarealabc3d;
+
+
+import com.sistema.tarealabc3d.Token;
+import java_cup.runtime.*;
+
+parser code {: 
+
+    public parser(Lexer analizadorLexico) {
+		super(analizadorLexico);
+	}
+:};
+
+
+/*seccion de Terminales*/ 
+terminal Token IDD, PUNTOCOMA, PARENTESISA, PARENTESISC,ENTERO, MENOS, MAS, POR, DIVISION, IGUAL;
+
+
+
+/*seccion de No Terminales*/
+non terminal inicio, operation, terminal_casos,asignacion;
+
+
+precedence left MENOS, MAS;
+precedence left POR, DIVISION;
+
+start with  inicio;
+
+inicio ::= asignacion
+        | 
+        ;
+
+
+asignacion ::= IDD IGUAL operation PUNTOCOMA
+			| IDD IGUAL operation PUNTOCOMA asignacion
+			;
+
+
+        /*Gramatica de operacion aritmetica*/
+operation ::= operation MAS operation		 
+	| operation MENOS operation			 
+	| operation POR operation				 
+	| operation DIVISION operation			 
+	| terminal_casos    													 
+	| PARENTESISA operation:operacion PARENTESISC					
+	;
+
+terminal_casos ::= IDD
+                | ENTERO
+                ;
